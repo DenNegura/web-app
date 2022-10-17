@@ -1,0 +1,53 @@
+# Get all employees
+GET http://localhost:8080/employees
+
+### 
+# Get employee with id
+GET http://localhost:8080/employees/100
+
+### 
+# Get all departments
+GET http://localhost:8080/departments
+
+###
+# Get department with id
+GET http://localhost:8080/departments/1
+
+###
+# Save new employee
+POST http://localhost:8080/employees
+content-type: application/json
+
+{
+    "firstName": "Ion",
+    "lastName": "Druta",
+    "departmentId": 1,
+    "email": "ion.druta@gmail.com",
+    "phoneNumber": "514-675-1778",
+    "salary": 15000.0
+}
+
+###
+# Save new department
+
+POST http://localhost:8080/departments
+content-type: application/json
+
+{
+    "name": "Server",
+    "location": "Romania"
+}
+
+###
+# Save invalid employee
+PUT http://localhost:8080/employees/103
+content-type: application/json
+
+{
+    "firstName": "ION",
+    "lastName": "Druta",
+    "departmentId": 1,
+    "email": "ion.druta@gmail.com",
+    "phoneNumber": "514-675-1778",
+    "salary": 15000.0
+}
