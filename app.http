@@ -28,8 +28,20 @@ content-type: application/json
 }
 
 ###
-# Save new department
+# update employee
+PUT http://localhost:8080/employees/101
+content-type: application/json
 
+{
+    "firstName": "Anna",
+    "lastName": "Maxim",
+    "departmentId": 1,
+    "email": "anna.maxim@gmail.com",
+    "phoneNumber": "555-675-1778",
+    "salary": 20000.0
+}
+###
+# Save new department
 POST http://localhost:8080/departments
 content-type: application/json
 
@@ -37,17 +49,12 @@ content-type: application/json
     "name": "Server",
     "location": "Romania"
 }
-
 ###
-# Save invalid employee
-PUT http://localhost:8080/employees/103
+# Update new department
+PUT http://localhost:8080/departments/1
 content-type: application/json
 
 {
-    "firstName": "ION",
-    "lastName": "Druta",
-    "departmentId": 1,
-    "email": "ion.druta@gmail.com",
-    "phoneNumber": "514-675-1778",
-    "salary": 15000.0
+    "name": "Server",
+    "location": "Romania"
 }

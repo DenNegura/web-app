@@ -1,4 +1,4 @@
-package com.endava.webapp.entity;
+package com.endava.webapp.dto;
 
 import org.hibernate.validator.HibernateValidator;
 import org.junit.jupiter.api.Assertions;
@@ -11,11 +11,11 @@ import javax.validation.Validator;
 import java.util.Locale;
 import java.util.Set;
 
-class DepartmentTest {
+class DepartmentDtoTest {
 
     private static Validator validator;
 
-    private static Department department;
+    private static DepartmentDTO department;
 
     @BeforeEach
     void setUp() {
@@ -24,7 +24,7 @@ class DepartmentTest {
                 .defaultLocale(Locale.ENGLISH)
                 .buildValidatorFactory()
                 .getValidator();
-        department = new Department(1L, "Administration", "Chisinau");
+        department = new DepartmentDTO(1L, "Administration", "Chisinau");
     }
 
     @Test
@@ -32,7 +32,7 @@ class DepartmentTest {
         // Given
 
         // When
-        Set<ConstraintViolation<Department>> validate = validator.validate(department);
+        Set<ConstraintViolation<DepartmentDTO>> validate = validator.validate(department);
 
         // Then
         Assertions.assertTrue(validate.isEmpty());
@@ -43,12 +43,10 @@ class DepartmentTest {
         department.setName(null);
 
         // When
-        Set<ConstraintViolation<Department>> validate = validator.validate(department);
+        Set<ConstraintViolation<DepartmentDTO>> validate = validator.validate(department);
 
         // Then
-        Assertions.assertEquals(3, validate.size());
-        Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be null")));
-        Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be empty")));
+        Assertions.assertEquals(1, validate.size());
         Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be blank")));
     }
     @Test
@@ -57,12 +55,10 @@ class DepartmentTest {
         department.setLocation(null);
 
         // When
-        Set<ConstraintViolation<Department>> validate = validator.validate(department);
+        Set<ConstraintViolation<DepartmentDTO>> validate = validator.validate(department);
 
         // Then
-        Assertions.assertEquals(3, validate.size());
-        Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be null")));
-        Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be empty")));
+        Assertions.assertEquals(1, validate.size());
         Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be blank")));
     }
 }

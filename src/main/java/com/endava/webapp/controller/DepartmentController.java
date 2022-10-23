@@ -1,10 +1,9 @@
 package com.endava.webapp.controller;
 
-import com.endava.webapp.entity.Department;
-import com.endava.webapp.repository.DepartmentRepository;
-import lombok.RequiredArgsConstructor;
+import com.endava.webapp.dto.DepartmentDTO;
+import com.endava.webapp.service.DepartmentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,36 +15,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/departments")
-@RequiredArgsConstructor
 public class DepartmentController {
 
-    private final DepartmentRepository departmentRepository;
+    @Autowired
+    private DepartmentService departmentService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Department> getAll() {
-        return departmentRepository.findAll();
+    @GetMapping
+    public ResponseEntity<List<DepartmentDTO>> getAll() {
+        List<DepartmentDTO> departmentsDTO = departmentService.findAll();
+        return ResponseEntity.ok(departmentsDTO);
     }
 
     @GetMapping("/{departmentId}")
-    public ResponseEntity<Department> getById(@PathVariable long departmentId) {
-        Optional<Department> department = departmentRepository.findById(departmentId);
-        return ResponseEntity.ok(department.orElseThrow());
+    public ResponseEntity<DepartmentDTO> getById(@PathVariable long departmentId) {
+        DepartmentDTO departmentDTO = departmentService.findById(departmentId);
+        return ResponseEntity.ok(departmentDTO);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Department> save(@RequestBody @Validated Department department) {
-        Department saveDepartment = departmentRepository.save(department);
+    @PostMapping
+    public ResponseEntity<DepartmentDTO> save(@RequestBody @Validated DepartmentDTO department) {
+        DepartmentDTO saveDepartment = departmentService.save(department);
         return ResponseEntity.status(HttpStatus.CREATED).body(saveDepartment);
     }
 
     @PutMapping("/{departmentId}")
-    public ResponseEntity<Department> update(@PathVariable long departmentId, @RequestBody @Validated Department department) {
+    public ResponseEntity<DepartmentDTO> update(@PathVariable long departmentId,
+                                             @RequestBody @Validated DepartmentDTO department) {
         department.setDepartmentId(departmentId);
-        Department updateDepartment = departmentRepository.save(department);
+        DepartmentDTO updateDepartment = departmentService.save(department);
         return ResponseEntity.status(HttpStatus.CREATED).body(updateDepartment);
     }
 }
