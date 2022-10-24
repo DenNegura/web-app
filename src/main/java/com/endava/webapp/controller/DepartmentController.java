@@ -2,6 +2,7 @@ package com.endava.webapp.controller;
 
 import com.endava.webapp.dto.DepartmentDTO;
 import com.endava.webapp.service.DepartmentService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +19,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/departments")
+@AllArgsConstructor
 public class DepartmentController {
 
-    @Autowired
     private DepartmentService departmentService;
 
     @GetMapping

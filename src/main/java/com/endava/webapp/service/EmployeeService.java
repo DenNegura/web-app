@@ -4,6 +4,7 @@ import com.endava.webapp.dto.EmployeeDTO;
 import com.endava.webapp.entity.Employee;
 import com.endava.webapp.mapper.EmployeeMapper;
 import com.endava.webapp.repository.EmployeeRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class EmployeeService {
 
-    @Autowired
+
     private EmployeeRepository employeeRepository;
 
-    @Autowired
     private EmployeeMapper employeeMapper;
 
     public List<EmployeeDTO> findAll() {
@@ -26,7 +27,7 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
     public EmployeeDTO findById(long employeeId) {
-        Employee employee = employeeRepository.findById(employeeId).orElse(null);
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow();
         return employeeMapper.employeeToEmployeeDTO(employee);
     }
     public EmployeeDTO save(EmployeeDTO employee) {

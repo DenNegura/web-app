@@ -4,6 +4,7 @@ import com.endava.webapp.dto.DepartmentDTO;
 import com.endava.webapp.entity.Department;
 import com.endava.webapp.mapper.DepartmentMapper;
 import com.endava.webapp.repository.DepartmentRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class DepartmentService {
 
-    @Autowired
     private DepartmentRepository departmentRepository;
 
-    @Autowired
     private DepartmentMapper departmentMapper;
 
     public List<DepartmentDTO> findAll() {
@@ -27,7 +27,7 @@ public class DepartmentService {
     }
 
     public DepartmentDTO findById(long departmentId) {
-        Department department = departmentRepository.findById(departmentId).orElse(null);
+        Department department = departmentRepository.findById(departmentId).orElseThrow();
         return departmentMapper.departmentToDepartmentDTO(department);
     }
 

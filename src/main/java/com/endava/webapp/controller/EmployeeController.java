@@ -2,6 +2,7 @@ package com.endava.webapp.controller;
 
 import com.endava.webapp.dto.EmployeeDTO;
 import com.endava.webapp.service.EmployeeService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class EmployeeController {
 
     private final EmployeeService employeeService;

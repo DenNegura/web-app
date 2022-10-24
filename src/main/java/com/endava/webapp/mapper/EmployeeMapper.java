@@ -5,16 +5,16 @@ import com.endava.webapp.dto.EmployeeDTO;
 import com.endava.webapp.entity.Department;
 import com.endava.webapp.entity.Employee;
 import com.endava.webapp.service.DepartmentService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class EmployeeMapper {
 
-    @Autowired
     private DepartmentService departmentService;
 
-    @Autowired
     private DepartmentMapper departmentMapper;
     public EmployeeDTO employeeToEmployeeDTO(Employee employee) {
         if(employee == null) {
