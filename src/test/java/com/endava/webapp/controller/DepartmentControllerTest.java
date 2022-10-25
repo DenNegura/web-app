@@ -1,7 +1,7 @@
 package com.endava.webapp.controller;
 
-import com.endava.webapp.entity.Department;
-import com.endava.webapp.repository.DepartmentRepository;
+import com.endava.webapp.dto.DepartmentDTO;
+import com.endava.webapp.service.DepartmentService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,22 +31,22 @@ class DepartmentControllerTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private DepartmentRepository departmentRepository;
+    private DepartmentService departmentService;
     @InjectMocks
     private DepartmentController departmentController;
     @Autowired
-    private JacksonTester<Department> departmentJacksonTester;
+    private JacksonTester<DepartmentDTO> departmentJacksonTester;
 
-    private static final List<Department> DEPARTMENTS = List.of(
-            new Department(1L, "Administration", "Chisinau"),
-            new Department(2L, "IT", "USA")
+    private static final List<DepartmentDTO> DEPARTMENTS = List.of(
+            new DepartmentDTO(1L, "Administration", "Chisinau"),
+            new DepartmentDTO(2L, "IT", "USA")
     );
 
     @Test
     void testGetAllDepartments() throws Exception {
         // Given
         StringBuilder jsonContent = new StringBuilder().append("[");
-        Iterator<Department> departmentIterator = DEPARTMENTS.iterator();
+        Iterator<DepartmentDTO> departmentIterator = DEPARTMENTS.iterator();
         jsonContent.append(departmentJacksonTester.write(departmentIterator.next()).getJson());
         while(departmentIterator.hasNext()) {
             jsonContent.append(",").append(departmentJacksonTester.write(departmentIterator.next()).getJson());
@@ -55,7 +54,7 @@ class DepartmentControllerTest {
         jsonContent.append("]");
 
         // When
-        when(departmentRepository.findAll()).thenReturn(DEPARTMENTS);
+        when(departmentService.findAll()).thenReturn(DEPARTMENTS);
         MockHttpServletResponse response = mvc.perform(
                         get("/departments")
                                 .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -72,8 +71,8 @@ class DepartmentControllerTest {
         long departmentId = 1;
 
         // When
-        when(departmentRepository.findById(departmentId))
-                .thenReturn(Optional.ofNullable(DEPARTMENTS.get(0)));
+        when(departmentService.findById(departmentId))
+                .thenReturn(DEPARTMENTS.get(0));
         MockHttpServletResponse response = mvc.perform(
                         get("/departments/" + departmentId)
                                 .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -88,18 +87,18 @@ class DepartmentControllerTest {
     @Test
     void testSaveNewDepartment() throws Exception {
         // Given
-        Department department = new Department(3L, "Server", "Romania");
-        ArgumentCaptor<Department> departmentCaptor = ArgumentCaptor.forClass(Department.class);
+        DepartmentDTO department = new DepartmentDTO(3L, "Server", "Romania");
+        ArgumentCaptor<DepartmentDTO> departmentCaptor = ArgumentCaptor.forClass(DepartmentDTO.class);
 
         // When
-        when(departmentRepository.save(department)).thenReturn(department);
+        when(departmentService.save(department)).thenReturn(department);
         MockHttpServletResponse response = mvc.perform(
                         post("/departments")
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(departmentJacksonTester
                                         .write(department).getJson()))
                 .andReturn().getResponse();
-        verify(departmentRepository).save(departmentCaptor.capture());
+        verify(departmentService).save(departmentCaptor.capture());
 
         // Then
         Assertions.assertEquals(response.getStatus(), HttpStatus.CREATED.value());
@@ -111,18 +110,18 @@ class DepartmentControllerTest {
     void testUpdateDepartment() throws Exception {
         // Given
         long departmentId = DEPARTMENTS.get(0).getDepartmentId();
-        Department department = new Department(departmentId, "Server", "Romania");
-        ArgumentCaptor<Department> departmentCaptor = ArgumentCaptor.forClass(Department.class);
+        DepartmentDTO department = new DepartmentDTO(departmentId, "Server", "Romania");
+        ArgumentCaptor<DepartmentDTO> departmentCaptor = ArgumentCaptor.forClass(DepartmentDTO.class);
 
         // When
-        when(departmentRepository.save(department)).thenReturn(department);
+        when(departmentService.save(department)).thenReturn(department);
         MockHttpServletResponse response = mvc.perform(
                         put("/departments/" + departmentId)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(departmentJacksonTester
                                         .write(department).getJson()))
                 .andReturn().getResponse();
-        verify(departmentRepository).save(departmentCaptor.capture());
+        verify(departmentService).save(departmentCaptor.capture());
 
         // Then
         Assertions.assertEquals(response.getStatus(), HttpStatus.CREATED.value());

@@ -1,10 +1,10 @@
 package com.endava.webapp.controller;
 
-import com.endava.webapp.entity.Employee;
-import com.endava.webapp.repository.EmployeeRepository;
+import com.endava.webapp.dto.EmployeeDTO;
+import com.endava.webapp.service.EmployeeService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,36 +16,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/employees")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class EmployeeController {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Employee> getAll() {
-        return employeeRepository.findAll();
+    @GetMapping
+    public ResponseEntity<List<EmployeeDTO>> getAll() {
+        List<EmployeeDTO> employeesDTO = employeeService.findAll();
+        return ResponseEntity.ok(employeesDTO);
     }
 
     @GetMapping("/{employeeId}")
-    public ResponseEntity<Employee> getById(@PathVariable long employeeId) {
-        Optional<Employee> employee = employeeRepository.findById(employeeId);
-        return ResponseEntity.ok(employee.orElseThrow());
+    public ResponseEntity<EmployeeDTO> getById(@PathVariable long employeeId) {
+        EmployeeDTO employee = employeeService.findById(employeeId);
+        return ResponseEntity.ok(employee);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Employee> save(@RequestBody @Validated Employee employee) {
-        Employee saveEmployee = employeeRepository.save(employee);
+    @PostMapping
+    public ResponseEntity<EmployeeDTO> save(@RequestBody @Validated EmployeeDTO employee) {
+        EmployeeDTO saveEmployee = employeeService.save(employee);
         return ResponseEntity.status(HttpStatus.CREATED).body(saveEmployee);
     }
 
     @PutMapping("/{employeeId}")
-    public ResponseEntity<Employee> update(@PathVariable long employeeId, @RequestBody  @Validated Employee employee) {
+    public ResponseEntity<EmployeeDTO> update(@PathVariable long employeeId,
+                                              @RequestBody @Validated EmployeeDTO employee) {
         employee.setEmployeeId(employeeId);
-        Employee updateEmployee = employeeRepository.save(employee);
+        EmployeeDTO updateEmployee = employeeService.save(employee);
         return ResponseEntity.status(HttpStatus.CREATED).body(updateEmployee);
     }
 }

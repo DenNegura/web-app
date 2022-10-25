@@ -1,4 +1,4 @@
-package com.endava.webapp.controller;
+package com.endava.webapp.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

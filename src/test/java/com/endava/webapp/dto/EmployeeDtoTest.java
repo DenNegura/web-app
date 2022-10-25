@@ -1,4 +1,4 @@
-package com.endava.webapp.entity;
+package com.endava.webapp.dto;
 
 import org.hibernate.validator.HibernateValidator;
 import org.junit.jupiter.api.Assertions;
@@ -12,11 +12,11 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
 
-class EmployeeTest {
+class EmployeeDtoTest {
 
     private static Validator validator;
 
-    private static Employee employee;
+    private static EmployeeDTO employee;
 
     @BeforeEach
     void setUp() {
@@ -25,7 +25,7 @@ class EmployeeTest {
                 .defaultLocale(Locale.ENGLISH)
                 .buildValidatorFactory()
                 .getValidator();
-        employee = new Employee(100L, "Steven", "King", 1L, "steven.king@gmail.com", "515-123-4567", 14000);
+        employee = new EmployeeDTO(100L, "Steven", "King", 1L, "steven.king@gmail.com", "515-123-4567", 14000);
     }
 
     @Test
@@ -33,7 +33,7 @@ class EmployeeTest {
         // Given
 
         // When
-        Set<ConstraintViolation<Employee>> validate = validator.validate(employee);
+        Set<ConstraintViolation<EmployeeDTO>> validate = validator.validate(employee);
 
         // Then
         Assertions.assertTrue(validate.isEmpty());
@@ -45,12 +45,10 @@ class EmployeeTest {
         employee.setLastName(null);
 
         // When
-        Set<ConstraintViolation<Employee>> validate = validator.validate(employee);
+        Set<ConstraintViolation<EmployeeDTO>> validate = validator.validate(employee);
 
         // Then
-        Assertions.assertEquals(3, validate.size());
-        Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be null")));
-        Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be empty")));
+        Assertions.assertEquals(1, validate.size());
         Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be blank")));
     }
 
@@ -60,12 +58,10 @@ class EmployeeTest {
         employee.setLastName(null);
 
         // When
-        Set<ConstraintViolation<Employee>> validate = validator.validate(employee);
+        Set<ConstraintViolation<EmployeeDTO>> validate = validator.validate(employee);
 
         // Then
-        Assertions.assertEquals(3, validate.size());
-        Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be null")));
-        Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be empty")));
+        Assertions.assertEquals(1, validate.size());
         Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be blank")));
     }
 
@@ -75,8 +71,8 @@ class EmployeeTest {
         employee.setDepartmentId(0L);
 
         // When
-        Set<ConstraintViolation<Employee>> validate = validator.validate(employee);
-        Iterator<ConstraintViolation<Employee>> iterator = validate.iterator();
+        Set<ConstraintViolation<EmployeeDTO>> validate = validator.validate(employee);
+        Iterator<ConstraintViolation<EmployeeDTO>> iterator = validate.iterator();
 
         // Then
         Assertions.assertEquals(1, validate.size());
@@ -89,12 +85,10 @@ class EmployeeTest {
         employee.setEmail(null);
 
         // When
-        Set<ConstraintViolation<Employee>> validate = validator.validate(employee);
+        Set<ConstraintViolation<EmployeeDTO>> validate = validator.validate(employee);
 
         // Then
-        Assertions.assertEquals(3, validate.size());
-        Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be null")));
-        Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be empty")));
+        Assertions.assertEquals(1, validate.size());
         Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be blank")));
     }
     @Test
@@ -103,8 +97,8 @@ class EmployeeTest {
         employee.setEmail("email");
 
         // When
-        Set<ConstraintViolation<Employee>> validate = validator.validate(employee);
-        Iterator<ConstraintViolation<Employee>> iterator = validate.iterator();
+        Set<ConstraintViolation<EmployeeDTO>> validate = validator.validate(employee);
+        Iterator<ConstraintViolation<EmployeeDTO>> iterator = validate.iterator();
 
         // Then
         Assertions.assertEquals(1, validate.size());
@@ -116,12 +110,10 @@ class EmployeeTest {
         employee.setPhoneNumber(null);
 
         // When
-        Set<ConstraintViolation<Employee>> validate = validator.validate(employee);
+        Set<ConstraintViolation<EmployeeDTO>> validate = validator.validate(employee);
 
         // Then
-        Assertions.assertEquals(3, validate.size());
-        Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be null")));
-        Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be empty")));
+        Assertions.assertEquals(1, validate.size());
         Assertions.assertTrue(validate.stream().anyMatch(x -> x.getMessage().equals("must not be blank")));
     }
 
@@ -131,8 +123,8 @@ class EmployeeTest {
         employee.setSalary(0D);
 
         // When
-        Set<ConstraintViolation<Employee>> validate = validator.validate(employee);
-        Iterator<ConstraintViolation<Employee>> iterator = validate.iterator();
+        Set<ConstraintViolation<EmployeeDTO>> validate = validator.validate(employee);
+        Iterator<ConstraintViolation<EmployeeDTO>> iterator = validate.iterator();
 
         // Then
         Assertions.assertEquals(1, validate.size());
